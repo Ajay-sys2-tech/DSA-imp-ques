@@ -18,6 +18,8 @@ class TargetSum{
        
         count = 0;
         recursive(nums, target, 0, 0);
+
+        HashMap<String, Integer> memo = new HashMap<>();
         return count;
         }
     
@@ -26,8 +28,8 @@ class TargetSum{
     public static int count = 0;
     public static int[][] dp;
 
-        public static int memorization(int i, int target, int sum, int[] nums){
-            HashMap<String, Integer> memo = new HashMap<>();
+        public static int memorization(int i, int target, int sum, int[] nums,  HashMap<String, Integer> memo){
+            
 
             if(i == nums.length){
                 return sum == target ? 1 : 0;
@@ -36,8 +38,8 @@ class TargetSum{
             String key = new StringBuilder().append(i).append(",").append(sum).toString();
 
             if(!memo.containsKey(key)){
-                int add = memorization(i+1, target, sum + nums[i], nums);
-                int diff = memorization(i+1, target, sum - nums[i], nums);
+                int add = memorization(i+1, target, sum + nums[i], nums, memo);
+                int diff = memorization(i+1, target, sum - nums[i], nums, memo);
 
                 memo.put(key, add + diff);
             }
