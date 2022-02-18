@@ -1,6 +1,9 @@
+import java.util.*;
+
 class LCS{
 
     public static int[][] dp;
+    public static String lcs = "";
     public static void main(String[] args) {
         String a = "abcdefgh";
         String b = "abcdexhij";
@@ -10,20 +13,26 @@ class LCS{
 
         dp = new int[l1+1][l2+1];
 
-        // for(int i=0;i<=l1;i++){                         //uncomment to use memo function 
-        //     Arrays.fill(dp[i], -1);
-        // }
+        for(int i=0;i<=l1;i++){                         //uncomment to use memo function 
+            Arrays.fill(dp[i], -1);
+        }
 
-        int ans = recursive(a, b, a.length(), b.length());
+        // int ans = recursive(a, b, a.length(), b.length());
+
+        int ans = memo(a, b, l1, l2);
         System.out.println(ans);
+        System.out.println(lcs);
     }
 
 
     public static int recursive(String a, String b, int l1, int l2){
         if(l1 == 0 || l2 == 0)return 0;
 
-        if(a.charAt(l1-1) == b.charAt(l2-1))
-        return 1 + recursive(a, b, l1-1, l2-1);
+        if(a.charAt(l1-1) == b.charAt(l2-1)){
+            // lcs = lcs + a.charAt(l1-1);
+            return 1 + recursive(a, b, l1-1, l2-1);
+        }
+        
 
         else{
             return Math.max(recursive(a, b, l1-1, l2), recursive(a, b, l1, l2-1));
@@ -36,8 +45,10 @@ class LCS{
         
         if(dp[l1][l2] != -1) return dp[l1][l2];
         
-        if(s1.charAt(l1-1) == s2.charAt(l2-1))
+        if(s1.charAt(l1-1) == s2.charAt(l2-1)){
+            lcs = lcs + s1.charAt(l1-1);
             return dp[l1][l2] = 1+memo(s1, s2, l1-1, l2-1);
+        }
         
         else{
             return dp[l1][l2] = Math.max(memo(s1, s2, l1-1, l2), 
