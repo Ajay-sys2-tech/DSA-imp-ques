@@ -12,12 +12,14 @@ class SCS{
         int m = x.length();
         int n = y.length();
 
-        dp = new int[m+1][n+1];
+        // dp = new int[m+1][n+1];
        
-        for(int i=0;i<=m;i++)
-        Arrays.fill(dp[i], -1);
+        // for(int i=0;i<=m;i++)
+        // Arrays.fill(dp[i], -1);
 
-        System.out.println(memorization(x, y, m, n));
+        System.out.println(tabulation(x, y, m, n));
+
+        System.out.println(scs);
     }
 
 
@@ -61,7 +63,10 @@ class SCS{
         }
     }
 
+    public static String scs = "";
     public static int tabulation(String x, String y, int m, int n){
+
+        StringBuilder sb = new StringBuilder();
 
         dp = new int[m+1][n+1];
 
@@ -72,11 +77,53 @@ class SCS{
                 }
 
                 else{
-                    dp[i][j] = 1 + Math.min(dp[i-1][j], dp[i][j-1]);
+                    dp[i][j] =  1 + Math.max(dp[i-1][j], dp[i][j-1]);
                 }
             }
         }
 
+        for(int i=0;i<=m;i++){
+            for(int j=0;j<=n;j++){
+                System.out.print(dp[i][j] + " ");
+            }
+            System.out.println("");
+        }
+
+        int i = m;
+        int j = n;
+
+        while(i>0 && j>0){
+            // System.out.println("this is scs" + scs);
+            if(x.charAt(i-1) == y.charAt(j-1)){
+                sb.append(x.charAt(i-1));
+                i--;
+                j--;
+            }
+
+            else{
+                if(dp[i][j-1] > dp[i-1][j]){
+                    sb.append(y.charAt(j-1));
+                    j--;
+                }
+                else if(dp[i-1][j] > dp[i][j-1]){
+                    sb.append(x.charAt(i-1));
+                    i--;
+                }
+            }
+        }
+
+       
+        while(i>0){
+            sb.append(x.charAt(i-1));
+            i--;
+        }
+
+        while(j>0){
+            sb.append(y.charAt(j-1));
+            j--;
+        }
+
+        scs = sb.toString();
         return dp[m][n];
     }
 
